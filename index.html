@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Trabalho Prático 2</title>
+        <style rel="stylesheet">
+            
+        </style>
+        <script src="https://d3js.org/d3.v6.min.js"></script>
+    </head>
+
+    <body>
+
+    </body>
+
+    <script>
+        Promise.all([
+            d3.csv("datasets/Africa_Value.csv", d => saveContinent(d, "Africa")),
+            d3.csv("datasets/Americas_Value.csv", d => saveContinent(d, "Americas")),
+            d3.csv("datasets/Asia_Value.csv", d => saveContinent(d, "Asia")),
+            d3.csv("datasets/Europe_Value.csv", d => saveContinent(d, "Europe")),
+            d3.csv("datasets/Oceania_Value.csv", d => saveContinent(d, "Oceania")),
+            d3.csv("datasets/Africa_Quantity.csv", d => saveContinent(d, "Africa")),
+            d3.csv("datasets/Americas_Quantity.csv", d => saveContinent(d, "Americas")),
+            d3.csv("datasets/Asia_Quantity.csv", d => saveContinent(d, "Asia")),
+            d3.csv("datasets/Europe_Quantity.csv", d => saveContinent(d, "Europe")),
+            d3.csv("datasets/Oceania_Quantity.csv", d => saveContinent(d, "Oceania"))]).then(results => {
+            
+            let dataValue = [];
+            let dataQuantity = [];
+
+            for (let i = 0 ; i < 5 ; i++) {
+                dataValue = dataValue.concat(results[i]);
+            }
+
+            for (let i = 5 ; i < results.length ; i++) {
+                dataQuantity = dataQuantity.concat(results[i]);
+            }
+
+            let data_V_Brazil = dataValue.filter(d => d["Land Area"] == "Brazil")
+                                      .filter(d => d["Trade flow"] == "Export")
+                                      .filter(d => d["Commodity"] == "Fish")
+
+            let data_Q_Brazil = dataQuantity.filter(d => d["Land Area"] == "Brazil")
+                                      .filter(d => d["Trade flow"] == "Export")
+                                      .filter(d => d["Commodity"] == "Fish")
+                                      
+            console.log(data_V_Brazil, data_Q_Brazil)
+        })
+        
+    function saveContinent(d, continent){
+        d.continent = continent;
+        d["2000"] = +d["2000"];
+        return d;
+    }
+
+    </script>
+
+</html>
